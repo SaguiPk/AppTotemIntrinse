@@ -6,40 +6,11 @@ import certifi
 import os
 from typing import Optional, Tuple, Dict
 
-
-def formt_text(text):
-    # Dictionary to map accented characters to non-accented counterparts
-    accents = {
-        'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
-        'â': 'a', 'ê': 'e', 'ô': 'o', 'à': 'a', 'ã': 'a', 'õ': 'o', 'ç': 'c',
-        'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
-        'Â': 'A', 'Ê': 'E', 'Ô': 'O', 'À': 'A', 'Ã': 'A', 'Õ': 'O', 'Ç': 'C'
-    }
-    if isinstance(text, bytes):
-        text.encode('latin-1', errors='replace').decode('utf-8')
-    else:
-        pass
-    #text.encode('latin-1', errors='replace').decode('utf-8')
-    # Replace accented characters
-    #print(text)
-    new_text = ''.join(accents.get(char, char) for char in text)
-
-    # Remove special characters and numbers
-    new_text = ''.join(char for char in new_text if char.isalpha() or char.isspace())
-
-    if not new_text:
-        return '', ''
-
-    convenio = ''
-
-    return new_text.upper(), convenio
-
-
 class Url_Sheets:
     def __init__(self):
         self.conexao = False
         self.verif_conect()
-        self.url = 'https://docs.google.com/spreadsheets/d/1wgzO2nbzYRhCJBa501t1RxDMKdaEdjxj/'
+        self.url = "key env"
         print(self.url)
         self.session = requests.Session()
 
@@ -66,7 +37,7 @@ class Url_Sheets:
             return None
 
     def nomes_ids(self) -> Tuple[Optional[Dict], Optional[Dict]]:
-        key = 'export?gid=1538723142&range=A:C&format=csv'
+        key = "key env"
         url = self.url + key
         response = self.fetch_csv(url)
         if not response:
@@ -97,7 +68,6 @@ class Url_Sheets:
         return dic_teles
 
     def titulos(self) -> Optional[list]:
-        #print('extraindo nomes psis')
         dic_nomes, _ = self.nomes_ids()
 
         if not dic_nomes:
@@ -117,49 +87,5 @@ class Url_Sheets:
 
         return list(dic_nomes.keys())
 
-
-
-    # def planilha(self, id:str, psico:str) -> Optional[pd.DataFrame]:
-    #     #print('entrando na extração de planilha')
-    #
-    #     dic, _ = self.nomes_ids()
-    #
-    #     if not dic:
-    #         self.conexao = False
-    #         #print('entrando na extração de planilha S/ INTERNET')
-    #         return None
-    #
-    #     #print('extair')
-    #     url = self.url + f'export?gid={id}&range=A:F&&format=csv'
-    #     self.df_resultado = None
-    #     response = self.fetch_csv(url)
-    #
-    #     if not response:
-    #         return None
-    #
-    #     df = pd.read_csv(io.StringIO(response.text), header=None)
-    #     #print('planilha extraida, tratá-la')
-    #
-    #     # Define cabeçalho de forma dinâmica
-    #     header_row = 1 if df.iloc[0].isnull().all() else 0
-    #     df.columns = df.iloc[header_row]
-    #     df = df[header_row + 1:].reset_index(drop=True)
-    #
-    #     # novos_nomes = list(df.columns)  # Cria uma cópia da lista de nomes
-    #     # novos_nomes[2] = 'TERCA-FEIRA'  # Substitui o nome da segunda coluna
-    #     # df.columns = novos_nomes
-    #
-    #     df.columns = [col if i != 2 else 'TERCA-FEIRA' for i, col in enumerate(df.columns)]
-    #
-    #     #df = pd.read_csv(self.url + f'export?gid={id}&range=A:F&format=csv')
-    #
-    #     df.fillna(value=pd.NA, inplace=True)
-    #     pasta = os.path.join('agendas', f'agenda_{psico}.csv')
-    #     df.to_csv(pasta, sep=';', decimal=',', index=False, header=True, encoding='utf-8')
-    #
-    #     self.conexao = True
-    #     #print('finalizar o tratamento da planilha')
-    #     print(df)
-    #     return df
 
 
