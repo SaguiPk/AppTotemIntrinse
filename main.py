@@ -3,6 +3,7 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivymd.uix.button import MDButton, MDButtonText
+from kivymd.uix.dialog import MDDialog, MDDialogHeadlineText, MDDialogSupportingText, MDDialogButtonContainer
 
 from datetime import datetime
 import json
@@ -257,18 +258,17 @@ class MainApp(MDApp):
                     Clock.schedule_once(callback=lambda dt: (setattr(msg_erro, 'text', 'DIGITE SEU [b]NOME[/b] E FAÇA O CHECK-IN'), setattr(msg_erro, 'color', (1,1,1,1))), timeout=5)
 
     def atualizar(self):
-        #print('atualizar')
         self.but = None
         for widget in self.dialog.walk():
             if isinstance(widget, MDButton) and widget.id == 'atualizar':
+                #print('Aguarde...')
                 widget.theme_line_color = 'Custom'
                 widget.line_color = 'red'
                 self.but = widget
         def inic_atual(time=0):
-            lista_arquivos = None
-            # pegar os arquivos do diretorio nomes_psicos.json, ids_teleg.json, acessar a pasta agendas e limpá-la, e depois reinstalar o que foi removido
             if os.path.exists('jsons/nomes_psicos.json'):
                 os.remove('jsons/nomes_psicos.json')
+
             if os.path.exists('jsons/ids_teleg.json'):
                 os.remove('jsons/ids_teleg.json')
 
@@ -278,6 +278,25 @@ class MainApp(MDApp):
             self.but.line_color = 'green'
 
         Clock.schedule_once(inic_atual, 1)
+    def enviar_controles(self):
+        try:
+            self.dialog = None
+            if not self.dialog:
+                self.dialog = MDDialog(
+                    MDDialogHeadlineText(text="Atualização de Arquivos"),
+                    MDDialogSupportingText(text="Deseja atualizar os arquivo de base?"),
+                    MDDialogButtonContainer(
+                        MDButton(MDButtonText(text="Cancelar"), style="text", on_release=lambda x: self.dialog.dismiss()),
+                        MDButton(MDButtonText(text='Atualizar'), id='atualizar', style='text', on_release=lambda x: self.atualizar()),
+                        spacing="300dp"
+                    )
+                )
+
+            self.dialog.open()
+
+        except Exception as e:
+            #print(e)
+            self.dialog.dismiss()
 
 
 MainApp().run()
