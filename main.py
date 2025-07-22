@@ -224,7 +224,7 @@ class MainApp(MDApp):
                     id_msg.text = (f'[size=70]Bem Vindo {self.paciente.upper()}[/size]\n\n'  
                                    f'[size=50]Sua Psico já foi avisada ![/size]\n')
 
-                    token = '8079890566:AAEMXjtoZtI67YZPiA-hdDtorzCkf49Iums'
+                    token = 'key env'
                     bot = telebot.TeleBot(token=token)
                     bot.send_message(chat_id=self.ids_teles[self.psico], text=f'{self.paciente.upper()}')  # text=f'{nome_paciente.text.upper()}')
                     Clock.schedule_once(callback=self.voltar, timeout=10)
@@ -261,7 +261,6 @@ class MainApp(MDApp):
         self.but = None
         for widget in self.dialog.walk():
             if isinstance(widget, MDButton) and widget.id == 'atualizar':
-                #print('Aguarde...')
                 widget.theme_line_color = 'Custom'
                 widget.line_color = 'red'
                 self.but = widget
